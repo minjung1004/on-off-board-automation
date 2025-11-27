@@ -2,7 +2,7 @@ pipeline {
 	agent any
 	
 	parameters {
-		choice(name: 'ACTION', choices: ['onboard', 'offboard', description: 'Select action'])
+		choice(name: 'ACTION', choices: ['onboard', 'offboard'], description: 'Select action')
 		string(name: 'EMPLOYEE_FILE', defaultValue: 'jane_doe.yml', description: 'Employee YAML filename')
 	}
 
