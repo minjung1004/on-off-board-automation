@@ -20,11 +20,12 @@ RUN apt-get update && apt-get install -y \
 	docker.io \
 	&& rm -rf /var/lib/apt/lists*	
 
+RUN mkdir -p /workspace
+WORKDIR /workspace
+
 RUN groupadd -g 999 docker || true
 RUN usermod -aG docker jenkins
 
-RUN mkdir -p /workspace
-
-WORKDIR /workspace
-
 USER jenkins
+
+CMD ["tail", "-f", "/dev/null"]
