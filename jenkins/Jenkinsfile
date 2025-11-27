@@ -53,7 +53,7 @@ pipeline {
                     EMPLOYEES.each { println " - ${it}" }
 
                     // Filter only employees with action onboard/offboard
-                    EMPLOYEES_TO_RUN.clear()
+                    //EMPLOYEES_TO_RUN.clear()
 
                     for (file in EMPLOYEES) {
                         def data = readYaml file: file
