@@ -18,7 +18,7 @@ def create_ticket(employee_name, employee_email, action):
 	auth_base64 = base64.b64encode(auth_bytes).decode('ascii')
 
 	headers = {
-		"Authorized": f"Basic {auth_base64}",
+		"Authorization": f"Basic {auth_base64}",
 		"Content-Type": "application/json"
 	}
 	

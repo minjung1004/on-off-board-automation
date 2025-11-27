@@ -107,7 +107,7 @@ pipeline {
 					
 					withCredentials([
 						string(credentialsId: 'webex-bot-token', variable: 'WEBEX_BOT_TOKEN'),
-						string(credentialsId: 'webex-room-id', varibale: 'WEBEX_ROOM_ID')
+						string(credentialsId: 'webex-room-id', variable: 'WEBEX_ROOM_ID')
 					]) {
 						sh """
 							python3 scripts/send-webex-notif.py \
