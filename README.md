@@ -61,4 +61,30 @@ Located in `scripts/`, they handle:
 ---
 
 ## 📁 Repository Structure
+on-off-board-automation/
+│
+├── ansible/ # (Optional – for future enhancements)
+│
+├── docker/
+│ └── Dockerfile # Build environment for scripts
+│
+├── employees/ # Employee YAML files (pipeline triggers)
+│ ├── bob_dylan.yml
+│ ├── jane_doe.yml
+│ ├── jenny_kim.yml
+│ ├── john_smith.yml
+│ └── christopher_serrano.yml <-- Your file goes here
+│
+├── jenkins/
+│ └── Jenkinsfile # Main pipeline automation
+│
+├── scripts/
+│ ├── update_employees.py # Core onboarding/offboarding logic
+│ ├── jira_integration.py # Jira API handling
+│ └── webex_notify.py # Webex bot notifications
+│
+├── tests/
+│ └── test_employee_data.py # YAML validation tests
+│
+└── .gitignore
 
