@@ -62,7 +62,7 @@ def create_ticket(employee_name, employee_email, action):
 		print(response.text, file=sys.stderr)
 		sys.exit(1)
 
-if __name__ == "__main__"
+if __name__ == "__main__":
 	if len(sys.argv) != 4:
 		print("Usage: create-jira-ticket.py <employee_name> <employee_email> <action>")
 		sys.exit(1)
