@@ -49,9 +49,9 @@ pipeline {
 
                     for (file in EMPLOYEES) {
                         def data = readYaml file: file
-                        def action = data.employee.action ?: "none"
+                        def action = data.employee.action ?: "NONE"
 
-                        if (action == "onboard" || action == "offboard") {
+                        if (action == "ONBOARD" || action == "OFFBOARD") {
                             EMPLOYEES_TO_RUN.add([file: file, action: action])
                         }
                     }
@@ -116,14 +116,14 @@ pipeline {
                          **************/
                         echo "Running Ansible for: ${action}"
 
-                        if (action == "onboard") {
+                        if (action == "ONBOARD") {
                             sh """
                                 ansible-playbook ansible/playbooks/onboard.yml \
                                     -i ansible/inventory/hosts \
                                     -e "employee_name='${env.EMPLOYEE_NAME}'" \
                                     -e "employee_email='${env.EMPLOYEE_EMAIL}'"
                             """
-                        } else if (action == "offboard") {
+                        } else if (action == "OFFBOARD") {
                             sh """
                                 ansible-playbook ansible/playbooks/offboard.yml \
                                     -i ansible/inventory/hosts \
