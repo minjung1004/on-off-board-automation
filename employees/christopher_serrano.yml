@@ -1,0 +1,10 @@
+employee:
+  name: "Christopher Serrano"
+  email: "christopher.serrano@company.com"
+  role: "Security Analyst"
+  team: "Information Security"
+  manager: "tito.gonzalez@company.com"
+  start_date: "2025-01-01"
+  end_date:
+  status:
+  action:
