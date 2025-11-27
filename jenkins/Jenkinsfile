@@ -1,5 +1,10 @@
 pipeline {
-	agent any
+	agent {
+		docker {
+			image 'on-off-board-automation-workspace:latest'
+			args '-u root:root'
+		}
+	}
 	
 	parameters {
 		choice(name: 'ACTION', choices: ['onboard', 'offboard'], description: 'Select action')
