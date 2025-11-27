@@ -11,7 +11,7 @@ pipeline {
         JIRA_EMAIL = 'minjung10402@gmail.com'
         JIRA_PROJECT = 'HR'
     }
-
+	def EMPLOYEES_TO_RUN = []
     stages {
 
         stage('Checkout Code') {
@@ -45,7 +45,7 @@ pipeline {
                     EMPLOYEES.each { println " - ${it}" }
 
                     // Filter only employees with action onboard/offboard
-                    def EMPLOYEES_TO_RUN = []
+                    EMPLOYEE_TO_RUN.clear()
 
                     for (file in EMPLOYEES) {
                         def data = readYaml file: file
