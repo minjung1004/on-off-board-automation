@@ -1,9 +1,11 @@
-FROM ubuntu:22.04
+FROM jenkins/jenkins:lts
+
+USER root
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-	tzdata \
+	sudo \
 	git \
 	vim \
 	nano \
@@ -15,13 +17,13 @@ RUN apt-get update && apt-get install -y \
 	python3-yaml \
 	python3-jinja2 \
 	ansible \
-	sudo \
-	&& ln -fs /usr/share/zoneinfo/US/Pacific /etc/localtime \
-	&& dpkg-reconfigure --frontend noninteractive tzdata \
-	&& rm -rf /var/lib/apt/lists/*
+	docker.io \
+	&& rm -rf /var/lib/apt/lists*	
 
 RUN mkdir -p /workspace
 
 WORKDIR /workspace
+
+USER jenkins
 
 CMD ["tail", "-f", "/dev/null"]
