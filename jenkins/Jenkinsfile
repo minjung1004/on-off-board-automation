@@ -11,8 +11,16 @@ pipeline {
         JIRA_EMAIL = 'minjung10402@gmail.com'
         JIRA_PROJECT = 'HR'
     }
-	def EMPLOYEES_TO_RUN = []
+	
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    // Global list accessible in later stages
+                    EMPLOYEES_TO_RUN = []
+                }
+            }
+        }
 
         stage('Checkout Code') {
             steps {
