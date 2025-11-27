@@ -1,0 +1,6 @@
+employee:
+  name: "John Smith"
+  email: "john.smith@company.com"
+  role: "Software Engineer"
+  team: "Engineering"
+  manager: "manager@company.com"

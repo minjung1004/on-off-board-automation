@@ -1,0 +1,6 @@
+employee:
+  name: "Jane Doe"
+  email: "jane.doe@company.com"
+  role: "Software Engineer"
+  team: "Engineering"
+  manager: "manager@company.com"

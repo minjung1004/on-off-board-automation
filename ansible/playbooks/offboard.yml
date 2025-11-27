@@ -1,0 +1,31 @@
+---
+- name: Offboard Employee
+  hosts: local
+  gather_facts: no
+
+  vars:
+    employee_name: "{{ employee_name }}"
+    container_name: "workspace-{{ employee_name | lower | replace(' ', '-') }}"
+    employee_email: "{{ employee_email }}"
+
+  tasks:
+    - name: Display offboarding info
+      debug:
+        msg: "Starting offboarding for {{ employee_name }}:{{ employee_email }}"
+
+    - name: Stop Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: stopped
+      ignore_errors: yes
+
+    - name: Remove Docker container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+      ignore_errors: yes
+
+    - name: Display result
+      debug:
+        msg: "[SUCCESS] Container {{ container_name }} removed"
+

@@ -1,0 +1,101 @@
+pipeline {
+	agent any
+	
+	parameters {
+		choice(name: 'ACTION', choices: ['onboard', 'offboard', description: 'Select action'])
+		string(name: 'EMPLOYEE_FILE', defaultValue: 'jane_doe.yml', description: 'Employee YAML filename')
+	}
+
+	environment {
+		EMPLOYEE_PATH = "employees/${params.ACTION}/${params.EMPLOYEE_FILE}"
+	}
+	
+	stages {
+		stage('Checkout Code') {
+			steps {
+				echo "Checking out code from GitHub ..."
+				checkout scm
+			}
+		}
+
+		stage('Parse Employee Data') {
+			steps {
+				script {
+					echo "Reading employee file: ${EMPLOYEE_PATH}"
+
+					// Read YAML file
+					def employeeData = readYaml file: "${EMPLOYEE_PATH}"
+
+					// Extract YAML file
+					env.EMPLOYEE_NAME = employeeData.employee.name
+					env.EMPLOYEE_EMAIL = employeeData.employee.email
+					env.EMPLOYEE_ROLE = employeeData.employee.role
+					env.EMPLOYEE_TEAM = employeeData.employee.team
+					env.EMPLOYEE_MANAGER = employeeData.employee.manager
+	
+					echo "Processing ${params.ACTION} for: ${env.EMPLOYEE_NAME}"
+					echo "Email: ${env.EMPLOYEE_EMAIL}"
+					echo "Role: ${env.EMPLOYEE_ROLE}"
+					echo "Team: ${env.EMPLOYEE_TEAM}"
+				}
+			}
+		}
+		
+		stage('Create Jira Ticket') {
+			steps {
+				script {
+					echo "Creating Jira ticker for ${env.EMPLOYEE_NAME}"
+					// placeholder
+					env.JIRA_TICKET = "HR-TBD"
+					echo "Jira ticket: ${env.JIRA_TICKET}"
+				}
+			}
+		}
+	
+		stage('Run Ansible Playbook') {
+			steps {
+				script {
+					echo "Running Ansible playbook for ${params.ACTION} ..."
+					
+					if (params.ACTION == 'onboard') {
+						sh """
+							ansible-playbook ansible/playbooks/onboard.yml \
+								-i ansible/inventory/hosts \
+								-e "employee_name='${env.EMPLOYEE_NAME}'" \
+								-e "employee_email='${env.EMPLOYEE_EMAIL}'"
+						"""
+					} else {
+						sh """
+							ansible-playbook ansible/playbooks/offboard.yml \
+								-i ansible/inventory/hosts \
+								-e "employee_name='${env.EMPLOYEE_NAME}'" \
+								-e "employee_email='${env.EMPLOYEE_EMAIL}'"
+
+						"""
+					}
+				}
+			}
+		}
+		
+		stage('Send Notifcation') {
+			steps {
+				script {
+					echo "Sending notication to ${env.EMPLOYEE_MANAGER}"
+					echo "${params.ACTION.capitalize()} completed for ${env.EMPLOYEE_NAME}"
+					//placeholder for webex
+				}
+			}
+		}
+	}
+	
+	post {
+		success {
+			echo "Pipeline completed successfully!"
+			echo "Employee: ${env.EMPLOYEE_NAME}"
+			echo "Action: ${params.ACTION}"
+		}
+		failure {
+			echo "Pipeline failed. Check logs above."
+		}
+	}
+}
