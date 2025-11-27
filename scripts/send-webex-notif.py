@@ -16,7 +16,7 @@ def send_msg(employee_name, action, jira_ticket, manager_email):
 	# Create msg
 	if action == "onboard":
 		emoji = "🎉"
-		status = " Successfully onboarded!"
+		status = "Successfully onboarded!"
 	else:
 		emoji = "👋"
 		status = "Successfully offboarded!"
@@ -25,6 +25,7 @@ def send_msg(employee_name, action, jira_ticket, manager_email):
 		{emoji} **Employee {action.capitalize()}**
 		**Name:** {employee_name}
 		**Action:** {action}
+		**Status:** {status}
 		**Jira Ticket:** {jira_ticket}
 		**Manager:** {manager_email}
 		✅ Automation completed successfully!
@@ -44,7 +45,7 @@ def send_msg(employee_name, action, jira_ticket, manager_email):
 	if response.status_code == 200:
 		print(f"✅ Webex notification sent successfully!")
 	else:
-		print(f"❌ Error sending Webex notification: {response.status_code}", file=sys.stderr")
+		print(f"❌ Error sending Webex notification: {response.status_code}", file=sys.stderr)
 		print(response.text, file=sys.stderr)
 		sys.exit(1)
 
