@@ -12,7 +12,7 @@ pipeline {
 	}
 
 	environment {
-		EMPLOYEE_PATH = "employees/${params.ACTION}/${params.EMPLOYEE_FILE}"
+		EMPLOYEE_PATH = "employees/${params.EMPLOYEE_FILE}"
 		JIRA_URL = 'https://on-off-board-automation.atlassian.net'
 		JIRA_EMAIL = 'minjung10402@gmail.com'
 		JIRA_PROJECT = 'HR'
