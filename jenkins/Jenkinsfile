@@ -1,4 +1,167 @@
 pipeline {
+    agent {
+        docker {
+            image 'jenkins-with-docker-ansible:latest'
+            args '-u root:root'
+        }
+    }
+
+    environment {
+        JIRA_URL = 'https://on-off-board-automation.atlassian.net'
+        JIRA_EMAIL = 'minjung10402@gmail.com'
+        JIRA_PROJECT = 'HR'
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                echo "Checking out code..."
+                checkout scm
+            }
+        }
+
+        stage('Detect Employees to Process') {
+            steps {
+                script {
+                    echo "Scanning employees directory..."
+
+                    EMPLOYEES = sh(
+                        script: "ls employees/*.yml",
+                        returnStdout: true
+                    ).trim().split('\n')
+
+                    echo "Found employee files:"
+                    EMPLOYEES.each { println " - ${it}" }
+
+                    // Filter only employees with action onboard/offboard
+                    EMPLOYEES_TO_RUN = []
+
+                    for (file in EMPLOYEES) {
+                        def data = readYaml file: file
+                        def action = data.employee.action ?: "none"
+
+                        if (action == "onboard" || action == "offboard") {
+                            EMPLOYEES_TO_RUN.add([file: file, action: action])
+                        }
+                    }
+
+                    if (EMPLOYEES_TO_RUN.isEmpty()) {
+                        error "No employees require onboarding or offboarding."
+                    }
+
+                    echo "\nEmployees requiring actions:"
+                    EMPLOYEES_TO_RUN.each { println " - ${it.file} (${it.action})" }
+                }
+            }
+        }
+
+        stage('Process Each Employee') {
+            steps {
+                script {
+
+                    for (emp in EMPLOYEES_TO_RUN) {
+
+                        def file = emp.file
+                        def action = emp.action
+
+                        echo "\n==============================="
+                        echo "Processing: ${file}"
+                        echo "Action: ${action}"
+                        echo "==============================="
+
+                        // Load YAML
+                        def data = readYaml file: file
+                        env.EMPLOYEE_NAME = data.employee.name
+                        env.EMPLOYEE_EMAIL = data.employee.email
+                        env.MANAGER_EMAIL = data.employee.manager
+
+                        echo "Employee: ${env.EMPLOYEE_NAME}"
+                        echo "Email: ${env.EMPLOYEE_EMAIL}"
+                        echo "Manager: ${env.MANAGER_EMAIL}"
+
+                        /**************
+                         * CREATE JIRA TICKET
+                         **************/
+                        echo "Creating Jira ticket..."
+
+                        withCredentials([string(credentialsId: 'jira-api-token', variable: 'JIRA_API_TOKEN')]) {
+                            def result = sh(
+                                script: """
+                                    python3 scripts/create-jira-ticket.py \
+                                        '${env.EMPLOYEE_NAME}' \
+                                        '${env.EMPLOYEE_EMAIL}' \
+                                        '${action}'
+                                """,
+                                returnStdout: true
+                            ).trim()
+
+                            env.JIRA_TICKET = result.split('=')[1]
+                        }
+
+                        echo "✔ Jira created: ${env.JIRA_TICKET}"
+
+                        /**************
+                         * RUN ANSIBLE
+                         **************/
+                        echo "Running Ansible for: ${action}"
+
+                        if (action == "onboard") {
+                            sh """
+                                ansible-playbook ansible/playbooks/onboard.yml \
+                                    -i ansible/inventory/hosts \
+                                    -e "employee_name='${env.EMPLOYEE_NAME}'" \
+                                    -e "employee_email='${env.EMPLOYEE_EMAIL}'"
+                            """
+                        } else if (action == "offboard") {
+                            sh """
+                                ansible-playbook ansible/playbooks/offboard.yml \
+                                    -i ansible/inventory/hosts \
+                                    -e "employee_name='${env.EMPLOYEE_NAME}'" \
+                                    -e "employee_email='${env.EMPLOYEE_EMAIL}'"
+                            """
+                        }
+
+                        echo "✔ Ansible execution complete"
+
+                        /**************
+                         * SEND WEBEX
+                         **************/
+                        echo "Sending Webex notification..."
+
+                        withCredentials([
+                            string(credentialsId: 'webex-bot-token', variable: 'WEBEX_BOT_TOKEN'),
+                            string(credentialsId: 'webex-room-id', variable: 'WEBEX_ROOM_ID')
+                        ]) {
+                            sh """
+                                python3 scripts/send-webex-notif.py \
+                                    '${env.EMPLOYEE_NAME}' \
+                                    '${action}' \
+                                    '${env.JIRA_TICKET}' \
+                                    '${env.MANAGER_EMAIL}'
+                            """
+                        }
+
+                        echo "✔ Webex notification sent to ${env.MANAGER_EMAIL}"
+
+                    } // end for loop
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✔ Automated onboarding/offboarding pipeline completed successfully!"
+        }
+        failure {
+            echo "❌ Pipeline failed. Check logs."
+        }
+    }
+}
+
+'''
+pipeline {
 	agent {
 		docker {
 			image 'jenkins-with-docker-ansible:latest'
@@ -136,3 +299,4 @@ pipeline {
 		}
 	}
 }
+'''
