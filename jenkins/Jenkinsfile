@@ -1,7 +1,7 @@
 pipeline {
 	agent {
 		docker {
-			image 'on-off-board-automation-workspace:latest'
+			image 'jenkins-with-docker-ansible:latest'
 			args '-u root:root'
 		}
 	}
