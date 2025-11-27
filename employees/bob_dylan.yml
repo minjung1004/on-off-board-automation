@@ -1,0 +1,10 @@
+employee:
+  name: "Bob Dylan"
+  email: "bob.dylan@company.com"
+  role: "IT Help Desk"
+  team: "IT"
+  manager: "manager@company.com"
+  start_date: "2025-11-27"
+  end_date:
+  status:
+  action:

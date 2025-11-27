@@ -1,0 +1,10 @@
+employee:
+  name: "Jenny Kim"
+  email: "jenny.kim@company.com"
+  role: "Interal Auditor"
+  team: "Audit"
+  manager: "manager@company.com"
+  start_date: "2025-11-23"
+  end_date:
+  status:
+  action:

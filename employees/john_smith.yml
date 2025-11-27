@@ -4,3 +4,7 @@ employee:
   role: "Software Engineer"
   team: "Engineering"
   manager: "manager@company.com"
+  start_date: "2022-11-22"
+  end_date: "2025-11-27"
+  status: "onboarded"
+  action:
