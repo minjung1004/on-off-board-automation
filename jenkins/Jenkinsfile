@@ -21,6 +21,16 @@ pipeline {
             }
         }
 
+		stage('Update Employee Actions') {
+    		steps {
+        		script {
+            		echo "Updating employee actions based on start/end dates..."
+            		sh 'python3 scripts/update_employees.py'
+            		echo "✔ Employee YAMLs updated"
+        		}
+    		}
+		}
+
         stage('Detect Employees to Process') {
             steps {
                 script {
