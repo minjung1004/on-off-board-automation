@@ -17,7 +17,7 @@ def save_yaml(path,data):
 		yaml.dump(data, f, sort_keys=False)
 
 # Docker Helpers
-def docker_container_exits(name):
+def docker_container_exists(name):
 	result = subprocess.run(
 		["docker", "ps", "-a", "-q", "--filter", f"name=^{name}$"],
 		stdout=subprocess.PIPE,
@@ -31,7 +31,7 @@ def docker_container_exits(name):
 def within_one_week(date_str):
 	# Return True if date is within +/- 7 days from today
 	if not date_str:
-		return Flase
+		return False
 	try:
 		date = datetime.strptime(date_str, "%Y-%m-%d")
 	except ValueError:
@@ -56,7 +56,7 @@ def format_container_name(employee_name):
 
 # Main Logic
 def main():
-	for filename in os.listdor(EMPLOYEE_DIR):
+	for filename in os.listdir(EMPLOYEE_DIR):
 		if not filename.endswith(".yml"):
 			continue
 
