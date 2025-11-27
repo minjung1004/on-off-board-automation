@@ -45,6 +45,7 @@ pipeline {
 					echo "Email: ${env.EMPLOYEE_EMAIL}"
 					echo "Role: ${env.EMPLOYEE_ROLE}"
 					echo "Team: ${env.EMPLOYEE_TEAM}"
+					echo "Manager: ${env.MANAGER_EMAIL"
 				}
 			}
 		}
@@ -64,13 +65,11 @@ pipeline {
 							""",
 							returnStdout: true
 						).trim()
+						
 					// Extract ticket key from ouput
 					env.JIRA_TICKET = result.split('=')[1]
 					echo "✅ Jira ticket created: ${env.JIRA_TICKET}"
 					}
-					// placeholder
-					//env.JIRA_TICKET = "HR-TBD"
-					//echo "Jira ticket: ${env.JIRA_TICKET}"
 				}
 			}
 		}
