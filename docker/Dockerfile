@@ -15,6 +15,9 @@ RUN apt-get update && apt-get install -y \
 	python3-yaml \
 	python3-jinja2 \
 	sudo \
+	software-properties-common \
+    	&& apt-add-repository --yes --update ppa:ansible/ansible \
+    	&& apt-get update && apt-get install -y ansible \
 	&& ln -fs /usr/share/zoneinfo/US/Pacific /etc/localtime \
 	&& dpkg-reconfigure --frontend noninteractive tzdata \
 	&& rm -rf /var/lib/apt/lists/*
