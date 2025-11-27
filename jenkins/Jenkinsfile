@@ -39,7 +39,7 @@ pipeline {
 					env.EMPLOYEE_EMAIL = employeeData.employee.email
 					env.EMPLOYEE_ROLE = employeeData.employee.role
 					env.EMPLOYEE_TEAM = employeeData.employee.team
-					env.EMPLOYEE_MANAGER = employeeData.employee.manager
+					env.MANAGER_EMAIL = employeeData.employee.manager
 	
 					echo "Processing ${params.ACTION} for: ${env.EMPLOYEE_NAME}"
 					echo "Email: ${env.EMPLOYEE_EMAIL}"
