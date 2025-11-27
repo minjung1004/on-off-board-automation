@@ -52,7 +52,7 @@ pipeline {
 		stage('Create Jira Ticket') {
 			steps {
 				script {
-					echo "Creating Jira ticker for ${env.EMPLOYEE_NAME}"
+					echo "Creating Jira ticket for ${env.EMPLOYEE_NAME}"
 					
 					withCredentials([string(credentialsId: 'jira-api-token', variable: 'JIRA_API_TOKEN')]) {
 						def result = sh(
