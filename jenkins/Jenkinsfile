@@ -13,6 +13,9 @@ pipeline {
 
 	environment {
 		EMPLOYEE_PATH = "employees/${params.ACTION}/${params.EMPLOYEE_FILE}"
+		JIRA_URL = 'https://on-off-board-automation.atlassian.net'
+		JIRA_EMAIL = 'minjung10402@gmail.com'
+		JIRA_PROJECT = 'HR'
 	}
 	
 	stages {
@@ -50,9 +53,24 @@ pipeline {
 			steps {
 				script {
 					echo "Creating Jira ticker for ${env.EMPLOYEE_NAME}"
+					
+					withCredentials([string(credentialsId: 'jira-api-token', variable: 'JIRA_API_TOKEN')]) {
+						def result = sh(
+							script: """
+								python3 scripts/create-jira-ticket.py \
+									'${env.EMPLOYEE_NAME}' \
+									'${env.EMPLOYEE_EMAIL}' \
+									'${params.ACTION}'
+							""",
+							returnStdout: true
+						).trim()
+					// Extract ticket key from ouput
+					env.JIRA_TICKET = result.split('=')[1]
+					echo "✅ Jira ticket created: ${env.JIRA_TICKET}"
+					}
 					// placeholder
-					env.JIRA_TICKET = "HR-TBD"
-					echo "Jira ticket: ${env.JIRA_TICKET}"
+					//env.JIRA_TICKET = "HR-TBD"
+					//echo "Jira ticket: ${env.JIRA_TICKET}"
 				}
 			}
 		}
@@ -82,11 +100,25 @@ pipeline {
 			}
 		}
 		
-		stage('Send Notifcation') {
+		stage('Send Webex Notifcation') {
 			steps {
 				script {
-					echo "Sending notication to ${env.EMPLOYEE_MANAGER}"
-					echo "${params.ACTION.capitalize()} completed for ${env.EMPLOYEE_NAME}"
+					echo "Sending Webex notication ..."
+					
+					withCredentials([
+						string(credentialsId: 'webex-bot-token', variable: 'WEBEX_BOT_TOKEN'),
+						string(credentialsId: 'webex-room-id', varibale: 'WEBEX_ROOM_ID')
+					]) {
+						sh """
+							python3 scripts/send-webex-notif.py \
+								'${env.EMPLOYEE_NAME}' \
+								'${params.ACTION}' \
+								'${env.JIRA_TICKET}' \
+								'${env.MANAGER_EMAIL}'
+						"""
+					}
+					echo "✅ Notification sent to ${env.MANAGER_EMAIL}"
+					//echo "${params.ACTION.capitalize()} completed for ${env.EMPLOYEE_NAME}"
 					//placeholder for webex
 				}
 			}
@@ -98,6 +130,7 @@ pipeline {
 			echo "Pipeline completed successfully!"
 			echo "Employee: ${env.EMPLOYEE_NAME}"
 			echo "Action: ${params.ACTION}"
+			echo "Jira Ticket: ${env.JIRA_TICKET}"
 		}
 		failure {
 			echo "Pipeline failed. Check logs above."
