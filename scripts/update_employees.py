@@ -13,7 +13,7 @@ def load_yaml(path):
 		return yaml.safe_load(f)
 
 def save_yaml(path,data):
-	with open(path. 'w') as f:
+	with open(path, 'w') as f:
 		yaml.dump(data, f, sort_keys=False)
 
 # Docker Helpers
