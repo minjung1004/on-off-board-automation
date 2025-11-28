@@ -7,7 +7,6 @@ pipeline {
 
     environment {
         JIRA_URL = 'https://on-off-board-automation.atlassian.net'
-        //JIRA_EMAIL = 'minjung10402@gmail.com'
         JIRA_PROJECT = 'HR'
     }
 
