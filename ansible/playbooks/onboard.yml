@@ -40,7 +40,7 @@
       set_fact:
         temp_password: "{{ lookup('password', '/dev/null length=12 chars=ascii_letters,digits') }}"
 
-    - name: ** Display Creds (for DEMO)**
+    - name: ** Display Creds (for DEMO) **
       debug:
         msg: "Credentials - Username: {{ employee_email }}, Password: {{ temp_password }}"
 
