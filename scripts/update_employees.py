@@ -50,6 +50,15 @@ def is_today(date_str):
 
 	return date.date() == datetime.today().date()
 
+def is_past(date_str):
+    if not date_str:
+        return False
+    try:
+        date = datetime.strptime(date_str, "%Y-%m-%d")
+    except ValueError:
+        return False
+    return date.date() < datetime.today().date()
+
 # Change name to container format
 def format_container_name(employee_name):
 	return f"workspace-{employee_name.lower().replace(' ', '-')}"
@@ -87,6 +96,11 @@ def main():
 		# If end_date is today, update action to offboard
 		if is_today(end_date):
 			employee["action"] = "OFFBOARD"
+
+		# New condition → Past end date
+        if is_past(end_date):
+            employee["status"] = "OFFBOARDED"
+            employee["action"] = "NONE"
 
 		# Save updates
 		data["employee"] = employee
