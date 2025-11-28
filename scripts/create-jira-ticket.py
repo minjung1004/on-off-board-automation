@@ -133,7 +133,7 @@ if __name__ == "__main__":
             print("Usage: python3 create-jira-ticket.py transition <issue_key> <transition_name>")
             print("   or: python3 create-jira-ticket.py create <name> <email> <action>")
             sys.exit(1)
-	'''
+'''
 	if len(sys.argv) != 4:
 		print("Usage: create-jira-ticket.py <employee_name> <employee_email> <action>")
 		sys.exit(1)
