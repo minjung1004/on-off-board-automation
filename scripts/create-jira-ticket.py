@@ -75,7 +75,7 @@ def transition_ticket(issue_key, transition_name):
 	response = requests.get(url, headers=jira_headers())
 
 	if response.status_code != 200:
-		print(f"[ERROR]: Could not fetch transitions for {issue_key}", file=sys.stderr)
+		print(f"❌ ERROR: Could not fetch transitions for {issue_key}", file=sys.stderr)
 		print(response.text, file=sys.stderr)
 		return
 
@@ -83,7 +83,7 @@ def transition_ticket(issue_key, transition_name):
 	transition_id = next((t["id"] for t in transitions if t["name"].lower() == transition_name.lower()), None)
 
 	if not transition_id:
-		print(f"[WARN]: Transition '{transition_name}' not available for {issue_key}")
+		print(f"⚠️ Transition '{transition_name}' not available for {issue_key}")
 		return
 
 	payload = {"transition": {"id": transition_id}}
@@ -93,29 +93,7 @@ def transition_ticket(issue_key, transition_name):
 		print(f"[ERROR]: Could not transition {issue_key} -> {transition_name}", file=sys.stderr)
 		print(response.text, file=sys.stderr)
 	else:
-		print(f"[SUCCESS]: Transitioned {issue_key} -> {transition_name}", file=sys.stderr)
-'''
-	# Find transition ID by name
-	transition_id = None
-	for t in transitions:
-		if t["name"].lower() == transition_name.lower():
-			transition_id = t["id"]
-			break
-
-	if not transition_id:
-		print(f"[WARN]: Transition '{transition_name}' not available for {issue_key}")
-		return
-
-	# Perform transition
-	payload = { "transition": {"id": transition_id} }
-	response = requests.post(url, headers=jira_headers(), json=payload)
-
-	if response.status_code not in (200, 204):
-		print(f"[ERROR]: Could not transition {issue_key} -> {transition_name}", file=sys.stderr)
-		print(response.text, file=sys.stderr)
-	else:
-		print(f"[SUCCESS]: Transitioned {issue_key} -> {transition_name}")
-'''
+		print(f"✅ Transitioned {issue_key} -> {transition_name}", file=sys.stderr)
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
@@ -139,18 +117,3 @@ if __name__ == "__main__":
             print("Usage: python3 create-jira-ticket.py transition <issue_key> <transition_name>")
             print("   or: python3 create-jira-ticket.py create <name> <email> <action>")
             sys.exit(1)
-'''
-	if len(sys.argv) != 4:
-		print("Usage: create-jira-ticket.py <employee_name> <employee_email> <action>")
-		sys.exit(1)
-
-	employee_name = sys.argv[1]
-	employee_email = sys.argv[2]
-	action = sys.argv[3]
-
-	# Create issue
-	issue_key = create_ticket(employee_name, employee_email, action)
-
-	# Move -> In Progress
-	transition_ticket(issue_key, "In Progress")
-'''
