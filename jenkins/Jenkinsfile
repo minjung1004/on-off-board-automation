@@ -121,15 +121,13 @@ pipeline {
 
 						echo "Starting automation playbook..."
 						sh """
-  							# Move ticket to In Progress before playbook runs
-  							python3 -c "from scripts.create_jira_ticket import transition_ticket; transition_ticket('${env.JIRA_TICKET}', 'In Progress')"
-
-  							ansible-playbook employees/${action}.yml
+						# Move ticket to In Progress before playbook runs
+						python3 scripts/create-jira-ticket.py transition '${env.JIRA_TICKET}' 'In Progress'
+						ansible-playbook employees/${action}.yml
 						"""
-
 						echo "Automation finished. Marking Jira ticket as Done..."
 						sh """
-  							python3 -c "from scripts.create_jira_ticket import transition_ticket; transition_ticket('${env.JIRA_TICKET}', 'Done')"
+						python3 scripts/create-jira-ticket.py transition '${env.JIRA_TICKET}' 'Done'
 						"""
 
                         /**************
