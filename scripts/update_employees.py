@@ -98,7 +98,7 @@ def main():
 			employee["action"] = "OFFBOARD"
 
 		# New condition → Past end date
-	    if is_past(end_date):
+		if is_past(end_date):
 			employee["status"] = "OFFBOARDED"
 			employee["action"] = "NONE"
 
