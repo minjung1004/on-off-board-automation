@@ -129,6 +129,12 @@ if __name__ == "__main__":
             employee_email = sys.argv[3]
             action = sys.argv[4]
             create_ticket(employee_name, employee_email, action)
+        # Handle legacy calling pattern (without "create" command)
+        elif len(sys.argv) == 4:
+            employee_name = sys.argv[1]
+            employee_email = sys.argv[2]
+            action = sys.argv[3]
+            create_ticket(employee_name, employee_email, action)
         else:
             print("Usage: python3 create-jira-ticket.py transition <issue_key> <transition_name>")
             print("   or: python3 create-jira-ticket.py create <name> <email> <action>")
