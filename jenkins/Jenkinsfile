@@ -116,20 +116,15 @@ pipeline {
                             ).trim()
 
                             env.JIRA_TICKET = result.split('=')[1]
+							echo "✔ Jira created: ${env.JIRA_TICKET}"
+
+							// Transition to In Progress
+                            echo "Moving ticket to In Progress..."
+                            sh """
+                                export JIRA_API_TOKEN='${JIRA_API_TOKEN}'
+                                python3 scripts/create-jira-ticket.py transition '${env.JIRA_TICKET}' 'In Progress'
+                            """
                         }
-
-                        echo "✔ Jira created: ${env.JIRA_TICKET}"
-
-						echo "Starting automation playbook..."
-						sh """
-						# Move ticket to In Progress before playbook runs
-						python3 scripts/create-jira-ticket.py transition '${env.JIRA_TICKET}' 'In Progress'
-						ansible-playbook employees/${action}.yml
-						"""
-						echo "Automation finished. Marking Jira ticket as Done..."
-						sh """
-						python3 scripts/create-jira-ticket.py transition '${env.JIRA_TICKET}' 'Done'
-						"""
 
                         /**************
                          * RUN ANSIBLE
@@ -153,6 +148,19 @@ pipeline {
                         }
 
                         echo "✔ Ansible execution complete"
+
+						/**************
+                         * MARK JIRA DONE
+                         **************/
+                        echo "Marking Jira ticket as Done..."
+                        withCredentials([string(credentialsId: 'jira-api-token', variable: 'JIRA_API_TOKEN')]) {
+                            sh """
+                                export JIRA_API_TOKEN='${JIRA_API_TOKEN}'
+                                python3 scripts/create-jira-ticket.py transition '${env.JIRA_TICKET}' 'Done'
+                            """
+                        }
+                        echo "✔ Jira ticket ${env.JIRA_TICKET} marked as Done"
+
 
                         /**************
                          * SEND WEBEX
