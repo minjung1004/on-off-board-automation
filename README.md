@@ -88,3 +88,16 @@ on-off-board-automation/
 │
 └── .gitignore
 
+---
+
+## Jenkins Configurations
+- Pluggin
+-- Git Integration Pluggin
+-- Pipeline Utility Steps
+-- Docker Pipeline
+  
+- Credentials
+-- Webex Bot Token
+-- Webex Room Id
+-- Jira API Token
+  
