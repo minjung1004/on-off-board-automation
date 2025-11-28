@@ -87,7 +87,7 @@ def transition_ticket(issue_key, transition_name):
 		return
 
 	payload = {"transition": {"id": transition_id}}
-    	response = requests.post(url, headers=jira_headers(), json=payload)
+	response = requests.post(url, headers=jira_headers(), json=payload)
 
     	if response.status_code not in (200, 204):
         	print(f"[ERROR]: Could not transition {issue_key} -> {transition_name}", file=sys.stderr)
