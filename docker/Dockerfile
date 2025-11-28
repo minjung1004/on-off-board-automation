@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
 	sudo \
 	git \
+	clean \
 	vim \
 	nano \
 	curl \
@@ -27,3 +28,5 @@ RUN groupadd -g 999 docker || true
 RUN usermod -aG docker jenkins
 
 USER jenkins
+
+EXPOSE 8080 50000
