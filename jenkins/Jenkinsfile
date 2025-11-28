@@ -107,6 +107,7 @@ pipeline {
                             def result = sh(
                                 script: """
                                     python3 scripts/create-jira-ticket.py \
+										create \
                                         '${env.EMPLOYEE_NAME}' \
                                         '${env.EMPLOYEE_EMAIL}' \
                                         '${action}'
