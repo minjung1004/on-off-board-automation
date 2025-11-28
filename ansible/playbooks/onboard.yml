@@ -9,22 +9,22 @@
     container_name: "workspace-{{ employee_name| lower | replace(' ', '-') }}"
 
   tasks:
-    - name: ** Display Onboarding Info **
+    - name: Display Onboarding Info
       debug:
         msg: "Starting onboarding for {{ employee_name }}: {{ employee_email }}"
 
-    - name: ** Check if container already exists **
+    - name: Check if container already exists
       ansible.builtin.shell: docker ps -a -q --filter "name=^{{ container_name }}$"
       register: existing_container
       ignore_errors: yes
       changed_when: false
 
-    - name: ** Remove existing container if present **
+    - name: Remove existing container if present
       ansible.builtin.shell: docker rm -f {{ container_name }}
       when: existing_container.stdout != ""
       ignore_errors: yes
 
-    - name: ** Create Docker container workspace **
+    - name: Create Docker container workspace
       ansible.builtin.shell: |
         docker run -d \
           --name {{ container_name }} \
@@ -32,15 +32,15 @@
           sleep infinity
       register: container_result
 
-    - name: ** Display Container Info **
+    - name: Display Container Info
       debug:
         msg: "[SUCCESS] Container created: {{ container_result.stdout[:12] }}"
 
-    - name: ** Generate Temporary Password **
+    - name: Generate Temporary Password
       set_fact:
         temp_password: "{{ lookup('password', '/dev/null length=12 chars=ascii_letters,digits') }}"
 
-    - name: ** Display Creds (for DEMO) **
+    - name: Display Creds (for DEMO)
       debug:
         msg: "Credentials - Username: {{ employee_email }}, Password: {{ temp_password }}"
 
