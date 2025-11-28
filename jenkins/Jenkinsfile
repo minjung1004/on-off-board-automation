@@ -12,11 +12,15 @@ pipeline {
         JIRA_PROJECT = 'HR'
     }
 
+	options {
+        // This will clean the workspace before checkout
+        skipDefaultCheckout(true)
+    }
+
     stages {
 		stage('Clean Workspace') {
             steps {
-                echo "Cleaning workspace..."
-                cleanWs()
+                deleteDir()  // Delete everything in workspace
             }
         }
 		
