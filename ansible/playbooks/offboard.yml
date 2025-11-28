@@ -9,23 +9,23 @@
     employee_email: "{{ employee_email }}"
 
   tasks:
-    - name: Display offboarding info
+    - name: ** Display Offboarding Info **
       debug:
         msg: "Starting offboarding for {{ employee_name }}:{{ employee_email }}"
 
-    - name: Stop Docker container
+    - name: ** Stop Docker Container **
       community.docker.docker_container:
         name: "{{ container_name }}"
         state: stopped
       ignore_errors: yes
 
-    - name: Remove Docker container
+    - name: ** Remove Docker Container **
       community.docker.docker_container:
         name: "{{ container_name }}"
         state: absent
       ignore_errors: yes
 
-    - name: Display result
+    - name: ** Display Results **
       debug:
         msg: "[SUCCESS] Container {{ container_name }} removed"
 
