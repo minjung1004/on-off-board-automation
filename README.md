@@ -89,15 +89,22 @@ on-off-board-automation/
 └── .gitignore
 
 ---
+## Docker commands
+
+docker build -t jenkins-with-docker-ansible:latest .
+
+docker run -d   --name jenkins   -p 8080:8080   -p 50000:50000   -v jenkins_home:/var/jenkins_home   -v /var/run/docker.sock:/var/run/docker.sock   -v $(pwd)/..:/workspace   --restart unless-stopped   jenkins-with-docker-ansible:latest
+
+---
 
 ## Jenkins Configurations
 - Pluggin
--- Git Integration Pluggin
--- Pipeline Utility Steps
--- Docker Pipeline
+  - Git Integration Pluggin
+  - Pipeline Utility Steps
+  - Docker Pipeline
   
 - Credentials
--- Webex Bot Token
--- Webex Room Id
--- Jira API Token
+  - Webex Bot Token
+  - Webex Room Id
+  - Jira API Token
   
