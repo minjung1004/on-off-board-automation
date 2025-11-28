@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     // Global list accessible in later stages
-                    def EMPLOYEES_TO_RUN = []
+                    EMPLOYEES_TO_RUN = []
                 }
             }
         }
