@@ -27,5 +27,3 @@ RUN groupadd -g 999 docker || true
 RUN usermod -aG docker jenkins
 
 USER jenkins
-
-#CMD ["tail", "-f", "/dev/null"]
