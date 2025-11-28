@@ -79,31 +79,35 @@ def main():
 
 		# Build container name
 		container_name = format_container_name(name)
+		container_exists = docker_container_exists(container_name)
 
-		# Check workspace container and update status
-		if docker_container_exists(container_name):
-			employee["status"] = "ONBOARDED"
-			employee["action"] = "NONE"
-		else:
-			employee["status"] = "NONE"
+		# Default
+		status = "NONE"
+		action = "NONE"
 
-		# If start_date is withinn 1 week , update action to onboard
-		if within_one_week(start_date):
-			employee["action"] = "ONBOARD"
-		else:
-			employee["action"] = "NONE"
-
-		# If end_date is today, update action to offboard
-		if is_today(end_date):
-			employee["action"] = "OFFBOARD"
-
-		# New condition → Past end date
+		# Past end date -> OFFBOARDED
 		if is_past(end_date):
-			employee["status"] = "OFFBOARDED"
-			employee["action"] = "NONE"
+				status = "OFFBOARDED"
+				action = "NONE"
 
-		# Save updates
-		data["employee"] = employee
+		# End date is today -> OFFBOARD
+		elif is_today(end_date):
+				status = "ONBOARDED" if container_exists else "NONE"
+				action = "OFFBOARD"
+
+		# start date within a week -> ONBAORD
+		elif within_one_week(start_date) and not container_exists:
+				status = "NONE"
+				action = "ONBOARD"
+
+		# Container exists -> ONBOARDED
+		elif container_exists:
+			status = "ONBOARDED"
+			action = "NONE"
+			
+		# Update YAML
+		employee["status"] = status
+		employee["action"] = action
 		save_yaml(path, data)
 
 		print(f"[UPDATED] {filename}: status={employee.get('status')}, action={employee.get('action')}")
