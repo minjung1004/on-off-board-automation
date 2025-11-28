@@ -96,7 +96,7 @@ def main():
 				action = "OFFBOARD"
 
 		# start date within a week -> ONBAORD
-		elif within_one_week(start_date) and not container_exists:
+		elif within_one_week(start_date):
 				status = "NONE"
 				action = "ONBOARD"
 
@@ -108,6 +108,7 @@ def main():
 		# Update YAML
 		employee["status"] = status
 		employee["action"] = action
+		data["employee"] = employee
 		save_yaml(path, data)
 
 		print(f"[UPDATED] {filename}: status={employee.get('status')}, action={employee.get('action')}")
