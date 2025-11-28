@@ -14,7 +14,7 @@ def send_msg(employee_name, action, jira_ticket, manager_email):
 	}
 
 	# Create msg
-	if action == "onboard":
+	if action == "ONBOARD":
 		emoji = "🎉"
 		status = "Successfully onboarded!"
 	else:
