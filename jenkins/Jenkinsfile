@@ -63,9 +63,6 @@ pipeline {
                     echo "Found employee files:"
                     EMPLOYEES.each { println " - ${it}" }
 
-                    // Filter only employees with action onboard/offboard
-                    //EMPLOYEES_TO_RUN.clear()
-
                     for (file in EMPLOYEES) {
                         def data = readYaml file: file
                         def action = data.employee.action ?: "NONE"
