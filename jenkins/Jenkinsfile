@@ -49,11 +49,14 @@ pipeline {
 					git config --global user.name "minjung1004"
 
 					# Fix Jenkins + Docker Git perm issue
-					git config --global --add safe.directory /var/jenkins_home/workspace/on-off-board-automation-jenkins
+					git config --global --add safe.directory $(pwd)
 
 					
 					echo "--- Git Status Before Commit ---"
 					git status
+
+					# Ensure we are on the actual branch, not detached HEAD
+					git checkout -B main origin/main
 					
 					git add employees/*.yml || true
 					
