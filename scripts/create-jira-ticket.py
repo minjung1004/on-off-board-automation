@@ -118,6 +118,22 @@ def transition_ticket(issue_key, transition_name):
 '''
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        command = sys.argv[1]
+        if command == "transition" and len(sys.argv) == 4:
+            issue_key = sys.argv[2]
+            transition_name = sys.argv[3]
+            transition_ticket(issue_key, transition_name)
+        elif command == "create" and len(sys.argv) == 5:
+            employee_name = sys.argv[2]
+            employee_email = sys.argv[3]
+            action = sys.argv[4]
+            create_ticket(employee_name, employee_email, action)
+        else:
+            print("Usage: python3 create-jira-ticket.py transition <issue_key> <transition_name>")
+            print("   or: python3 create-jira-ticket.py create <name> <email> <action>")
+            sys.exit(1)
+	'''
 	if len(sys.argv) != 4:
 		print("Usage: create-jira-ticket.py <employee_name> <employee_email> <action>")
 		sys.exit(1)
@@ -131,3 +147,4 @@ if __name__ == "__main__":
 
 	# Move -> In Progress
 	transition_ticket(issue_key, "In Progress")
+'''
