@@ -81,10 +81,10 @@ def transition_ticket(issue_key, transition_name):
 
 	transitions = response.json()["transitions"]
 	transition_id = next((t["id"] for t in transitions if t["name"].lower() == transition_name.lower()), None)
-
-    if not transition_id:
-        print(f"[WARN]: Transition '{transition_name}' not available for {issue_key}")
-        return
+	
+	if not transition_id:
+		print(f"[WARN]: Transition '{transition_name}' not available for {issue_key}")
+		return
 
     payload = {"transition": {"id": transition_id}}
     response = requests.post(url, headers=jira_headers(), json=payload)
