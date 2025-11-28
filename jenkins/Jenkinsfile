@@ -38,7 +38,33 @@ pipeline {
         		}
     		}
 		}
-
+		
+		stage('Commit & Push Updated Employee YAMLs') {
+			steps {
+				script {
+					echo "Committing updated employee YAML files…"
+					
+					sh '''
+					git config --global user.email "jenkins@company.com"
+					git config --global user.name "Jenkins Automation"
+					
+					echo "--- Git Status Before Commit ---"
+					git status
+					
+					git add employees/*.yml || true
+					
+					if ! git diff --cached --quiet; then
+						git commit -m "Automated employee update from Jenkins"
+						git push origin main
+						echo "✔ YAML updates pushed to GitHub"
+					else
+						echo "No YAML changes to commit."
+					fi
+					'''
+				}
+			}
+		}
+		
         stage('Detect Employees to Process') {
             steps {
                 script {
