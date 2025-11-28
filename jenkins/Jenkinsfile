@@ -25,13 +25,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo "Checking out code..."
-                //checkout scm
-				echo "Checking out code..."
-				checkout([
-						$class: 'GitSCM',
-						branches: [[name: '*/main']],
-						userRemoteConfigs: [[url: 'https://github.com/minjung1004/on-off-board-automation.git']]
-				])
+                checkout scm
             }
         }
 
@@ -43,39 +37,6 @@ pipeline {
             		echo "✔ Employee YAMLs updated"
         		}
     		}
-		}
-		
-		stage('Commit & Push Updated Employee YAMLs') {
-			steps {
-				script {
-					echo "Committing updated employee YAML files…"
-					
-					sh '''
-					git config --global user.email "minjung10402@gmail.com"
-					git config --global user.name "minjung1004"
-
-					# Fix Jenkins + Docker Git perm issue
-					git config --global --add safe.directory $(pwd)
-
-					
-					echo "--- Git Status Before Commit ---"
-					git status
-
-					# Ensure we are on the actual branch, not detached HEAD
-					git checkout -B main origin/main
-					
-					git add employees/*.yml || true
-					
-					if ! git diff --cached --quiet; then
-						git commit -m "Automated employee update from Jenkins"
-						git push origin main
-						echo "✔ YAML updates pushed to GitHub"
-					else
-						echo "No YAML changes to commit."
-					fi
-					'''
-				}
-			}
 		}
 		
         stage('Detect Employees to Process') {
