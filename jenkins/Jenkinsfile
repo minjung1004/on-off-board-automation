@@ -45,8 +45,8 @@ pipeline {
 					echo "Committing updated employee YAML files…"
 					
 					sh '''
-					git config --global user.email "jenkins@company.com"
-					git config --global user.name "Jenkins Automation"
+					git config --global user.email "minjung10402@gmail.com"
+					git config --global user.name "minjung1004"
 					
 					echo "--- Git Status Before Commit ---"
 					git status
