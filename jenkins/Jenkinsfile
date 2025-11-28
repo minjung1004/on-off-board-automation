@@ -11,7 +11,7 @@ pipeline {
         JIRA_EMAIL = 'minjung10402@gmail.com'
         JIRA_PROJECT = 'HR'
     }
-	
+
     stages {
         stage('Initialize') {
             steps {
@@ -38,7 +38,7 @@ pipeline {
         		}
     		}
 		}
-		
+
         stage('Detect Employees to Process') {
             steps {
                 script {
@@ -117,6 +117,8 @@ pipeline {
 
                             env.JIRA_TICKET = result.split('=')[1]
 							echo "✔ Jira created: ${env.JIRA_TICKET}"
+
+
 
 							// Transition to In Progress
                             echo "Moving ticket to In Progress..."
