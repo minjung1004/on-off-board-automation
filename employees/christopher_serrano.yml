@@ -4,7 +4,7 @@ employee:
   role: "Security Analyst"
   team: "Information Security"
   manager: "tito.gonzalez@company.com"
-  start_date: "2025-01-01"
+  start_date: "2025-11-25"
   end_date:
   status:
   action:
