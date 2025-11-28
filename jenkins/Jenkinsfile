@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'jenkins-with-docker-ansible:latest'
-            args '-u root:root'
+            //args '-u root:root'
         }
     }
 
