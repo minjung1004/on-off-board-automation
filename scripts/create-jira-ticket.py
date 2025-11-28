@@ -89,11 +89,11 @@ def transition_ticket(issue_key, transition_name):
 	payload = {"transition": {"id": transition_id}}
 	response = requests.post(url, headers=jira_headers(), json=payload)
 
-    	if response.status_code not in (200, 204):
-        	print(f"[ERROR]: Could not transition {issue_key} -> {transition_name}", file=sys.stderr)
-        	print(response.text, file=sys.stderr)
-    	else:
-        	print(f"[SUCCESS]: Transitioned {issue_key} -> {transition_name}")
+	if response.status_code not in (200, 204):
+		print(f"[ERROR]: Could not transition {issue_key} -> {transition_name}", file=sys.stderr)
+		print(response.text, file=sys.stderr)
+	else:
+		print(f"[SUCCESS]: Transitioned {issue_key} -> {transition_name}")
 '''
 	# Find transition ID by name
 	transition_id = None
