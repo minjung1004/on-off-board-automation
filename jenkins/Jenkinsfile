@@ -2,7 +2,6 @@ pipeline {
     agent {
         docker {
             image 'jenkins-with-docker-ansible:latest'
-            //args '-u root:root'
         }
     }
 
@@ -20,7 +19,8 @@ pipeline {
     stages {
 		stage('Clean Workspace') {
             steps {
-                deleteDir()  // Delete everything in workspace
+				// Delete everything in workspace
+                deleteDir()  
             }
         }
 		
@@ -106,9 +106,7 @@ pipeline {
                         echo "Email: ${env.EMPLOYEE_EMAIL}"
                         echo "Manager: ${env.MANAGER_EMAIL}"
 
-                        /**************
-                         * CREATE JIRA TICKET
-                         **************/
+                        // Create Jira Ticket
                         echo "Creating Jira ticket..."
 
                         withCredentials([string(credentialsId: 'jira-api-token', variable: 'JIRA_API_TOKEN')]) {
@@ -136,9 +134,7 @@ pipeline {
                             """
                         }
 
-                        /**************
-                         * RUN ANSIBLE
-                         **************/
+                        // Run Ansible
                         echo "Running Ansible for: ${action}"
 
                         if (action == "ONBOARD") {
@@ -159,9 +155,7 @@ pipeline {
 
                         echo "✔ Ansible execution complete"
 
-						/**************
-                         * MARK JIRA DONE
-                         **************/
+						// Mark Jira Done
                         echo "Marking Jira ticket as Done..."
                         withCredentials([string(credentialsId: 'jira-api-token', variable: 'JIRA_API_TOKEN')]) {
                             sh """
@@ -172,9 +166,7 @@ pipeline {
                         echo "✅ Jira ticket ${env.JIRA_TICKET} marked as Done"
 
 
-                        /**************
-                         * SEND WEBEX
-                         **************/
+                        // Send Wbex Notification
                         echo "Sending Webex notification..."
 
                         withCredentials([
@@ -192,7 +184,7 @@ pipeline {
 
                         echo "✅ Webex notification sent to ${env.MANAGER_EMAIL}"
 
-                    } // end for loop
+                    } 
                 }
             }
         }
@@ -200,7 +192,7 @@ pipeline {
 
     post {
         success {
-            echo "✔ Automated onboarding/offboarding pipeline completed successfully!"
+            echo "✅ Automated onboarding/offboarding pipeline completed successfully!"
         }
         failure {
             echo "❌ Pipeline failed. Check logs."
