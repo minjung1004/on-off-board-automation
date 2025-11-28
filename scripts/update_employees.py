@@ -24,7 +24,7 @@ def docker_container_exists(name):
 		stderr=subprocess.PIPE,
 		text=True
 	)
-	
+
 	return result.stdout.strip() != ""
 
 # Date Helpers
@@ -98,9 +98,9 @@ def main():
 			employee["action"] = "OFFBOARD"
 
 		# New condition → Past end date
-        if is_past(end_date):
-            employee["status"] = "OFFBOARDED"
-            employee["action"] = "NONE"
+	        if is_past(end_date):
+			employee["status"] = "OFFBOARDED"
+			employee["action"] = "NONE"
 
 		# Save updates
 		data["employee"] = employee
