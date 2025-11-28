@@ -93,7 +93,7 @@ def transition_ticket(issue_key, transition_name):
 		print(f"[ERROR]: Could not transition {issue_key} -> {transition_name}", file=sys.stderr)
 		print(response.text, file=sys.stderr)
 	else:
-		print(f"[SUCCESS]: Transitioned {issue_key} -> {transition_name}")
+		print(f"[SUCCESS]: Transitioned {issue_key} -> {transition_name}", file=sys.stderr)
 '''
 	# Find transition ID by name
 	transition_id = None
