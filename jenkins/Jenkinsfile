@@ -44,7 +44,7 @@ pipeline {
     		steps {
         		script {
             		echo "Updating employee actions based on start/end dates..."
-            		sh 'python3 scripts/update_employees.py'
+            		sh 'python3 scripts/update-employees.py'
             		echo "✅ Employee YAMLs updated"
         		}
     		}
