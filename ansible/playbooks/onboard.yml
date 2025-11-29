@@ -19,7 +19,7 @@
       ignore_errors: yes
       changed_when: false
 
-    - name: Remove existing container if present
+    - name: Remove existing container if present (for DEMO)
       ansible.builtin.shell: docker rm -f {{ container_name }}
       when: existing_container.stdout != ""
       ignore_errors: yes
