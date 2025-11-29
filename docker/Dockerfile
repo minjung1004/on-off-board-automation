@@ -24,7 +24,8 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir -p /workspace
 WORKDIR /workspace
 
-RUN groupadd -g 999 docker || true
+ARG DOCKER_GID=125
+RUN groupadd -g $DOCKER_GID docker || true
 RUN usermod -aG docker jenkins
 
 USER jenkins
