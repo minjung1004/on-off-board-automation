@@ -51,10 +51,8 @@ Located in `scripts/`, they handle:
 
 ### **Webex Bot**
 - Sends messages for:
-  - Onboarding started  
-  - Workspace created  
-  - Jira ticket created  
-  - Offboarding complete  
+  - Onboarding completed
+  - Offboarding completed  
   - Pipeline errors  
 - Keeps teams updated in real time  
 
