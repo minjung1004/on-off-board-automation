@@ -59,4 +59,4 @@ if __name__ == "__main__":
 	jira_ticket = sys.argv[3]
 	manager_email = sys.argv[4]
 
-	send_msg(employee_name, action, jira_ticket, manager_email)
+	send_msg(employee_name, action, jira_ticket, manager_email) 

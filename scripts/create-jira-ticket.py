@@ -116,4 +116,4 @@ if __name__ == "__main__":
         else:
             print("Usage: python3 create-jira-ticket.py transition <issue_key> <transition_name>")
             print("   or: python3 create-jira-ticket.py create <name> <email> <action>")
-            sys.exit(1)
+            sys.exit(1) 

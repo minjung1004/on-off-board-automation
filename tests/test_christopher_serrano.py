@@ -37,4 +37,4 @@ def test_email_format():
         data = yaml.safe_load(f)
 
     email = data["employee"]["email"]
-    assert re.match(r"[^@]+@[^@]+\.[^@]+", email)
+    assert re.match(r"[^@]+@[^@]+\.[^@]+", email) 

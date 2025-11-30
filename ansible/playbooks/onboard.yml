@@ -42,6 +42,4 @@
 
     - name: Display Creds (for DEMO)
       debug:
-        msg: "Credentials - Username: {{ employee_email }}, Password: {{ temp_password }}"
-
-
+        msg: "Credentials - Username: {{ employee_email }}, Password: {{ temp_password }}" 

@@ -30,4 +30,4 @@ RUN usermod -aG docker jenkins
 
 USER jenkins
 
-EXPOSE 8080 50000
+EXPOSE 8080 50000 

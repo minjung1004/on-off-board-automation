@@ -27,5 +27,4 @@
 
     - name: Display Results
       debug:
-        msg: "[SUCCESS] Container {{ container_name }} removed"
-
+        msg: "[SUCCESS] Container {{ container_name }} removed" 

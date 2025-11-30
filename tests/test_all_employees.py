@@ -42,4 +42,4 @@ def test_all_employee_emails_are_valid():
     for path in get_employee_files():
         emp = load_employee(path)
         email = emp["email"]
-        assert re.match(r"[^@]+@[^@]+\.[^@]+", email), f"{path}: invalid email '{email}'"
+        assert re.match(r"[^@]+@[^@]+\.[^@]+", email), f"{path}: invalid email '{email}'" 

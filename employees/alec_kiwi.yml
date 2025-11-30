@@ -4,10 +4,7 @@ employee:
   role: "Software Engineer"
   team: "Engineering"
   manager: "manager@company.com"
-  start_date: "2023-11-25"
-  end_date: "2025-11-29"
+  start_date: "2025-11-25"
+  end_date: 
   status: 
-  action:
-
-
-
+  action: 
